@@ -47,19 +47,5 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.accountService
-      .login(this.f['email'].value, this.f['password'].value)
-      .pipe(first())
-      .subscribe({
-        next: () => {
-          // get return url from query parameters or default to home page
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          this.router.navigateByUrl(returnUrl);
-        },
-        error: (error: any) => {
-          this.alertService.error(error);
-          this.loading = false;
-        },
-      });
   }
 }
