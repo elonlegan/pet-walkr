@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:4000',
+  apiUrl: 'https://waterbnb-backend-production.up.railway.app',
   CLOUDINARY_URL: 'https://api.cloudinary.com/v1_1/dev-empty/image/upload',
 };
 
