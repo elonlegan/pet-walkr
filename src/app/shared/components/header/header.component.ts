@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Role } from '@app/models';
 import { AccountService } from '@app/services';
 import { AppState } from '@app/store';
 import { Store } from '@ngrx/store';
@@ -10,6 +11,8 @@ import { logOut } from '@store/actions/account.actions';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  Role = Role;
+
   constructor(
     private accountService: AccountService,
     private store: Store<AppState>

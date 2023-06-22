@@ -3,7 +3,9 @@
   <span class="example-spacer"></span>
   <ng-container *ngIf="account">
     <a mat-button routerLink="/profile"> Profile </a>
-    <a mat-button routerLink="/admin"> Admin </a>
+    <a mat-button *ngIf="account.role === Role.Admin" routerLink="/admin">
+      Admin
+    </a>
     <button mat-raised-button extended color="warn" (click)="logout()">
       <mat-icon>exit_to_app</mat-icon>
       <span>Logout </span>

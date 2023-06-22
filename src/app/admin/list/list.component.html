@@ -37,7 +37,7 @@
           mat-raised-button
           color="warn"
           *ngIf="account.id !== admin.id"
-          (click)="deleteAccount(account.id)"
+          (click)="openConfirmDialog(account.id)"
           [disabled]="account.isDeleting"
         >
           <mat-icon *ngIf="account.isDeleting">hourglass_empty</mat-icon>

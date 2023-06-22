@@ -6,6 +6,11 @@ import { Account } from '@app/models';
 import { Observable } from 'rxjs';
 import { AppState } from '@app/store';
 import { Store } from '@ngrx/store';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from '@app/shared/components/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-list',
@@ -18,7 +23,8 @@ export class ListComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -41,5 +47,28 @@ export class ListComponent implements OnInit {
 
   get admin() {
     return this.accountService.accountValue;
+  }
+
+  openConfirmDialog(id: string): void {
+    const dialogData: ConfirmDialogData = {
+      title: 'Delete Account',
+      message: '¿Are you sure delete this account?',
+      confirmText: 'Confirm',
+      cancelText: 'Cancel',
+    };
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: dialogData,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.deleteAccount(id);
+      } else {
+        // Acción cuando se cancela
+        console.log('Cancelado');
+      }
+    });
   }
 }
