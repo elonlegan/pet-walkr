@@ -23,8 +23,8 @@
         <mat-label>Email</mat-label>
         <input matInput type="text" formControlName="email" />
         <mat-error>
-          <span *ngIf="f['email'].errors['required']">Email is required</span>
-          <span *ngIf="f['email'].errors['email']"
+          <span *ngIf="f['email'].errors?.['required']">Email is required</span>
+          <span *ngIf="f['email'].errors?.['email']"
             >Email must be a valid email address</span
           >
         </mat-error>
@@ -34,10 +34,10 @@
         <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="password" />
         <mat-error>
-          <span *ngIf="f['password'].errors['required']"
+          <span *ngIf="f['password'].errors?.['required']"
             >Password is required</span
           >
-          <span *ngIf="f['password'].errors['minlength']"
+          <span *ngIf="f['password'].errors?.['minlength']"
             >Password must be at least 6 characters</span
           >
         </mat-error>
@@ -47,10 +47,10 @@
         <mat-label>Confirm Password</mat-label>
         <input matInput type="password" formControlName="confirmPassword" />
         <mat-error *ngIf="submitted && f['confirmPassword'].errors">
-          <span *ngIf="f['confirmPassword'].errors['required']">
+          <span *ngIf="f['confirmPassword'].errors?.['required']">
             Confirm Password is required
           </span>
-          <span *ngIf="f['confirmPassword'].errors['mustMatch']">
+          <span *ngIf="f['confirmPassword'].errors?.['mustMatch']">
             Passwords must match</span
           >
         </mat-error>
@@ -64,10 +64,17 @@
       </mat-error>
 
       <div class="actions">
-        <button mat-raised-button color="primary" [disabled]="loading">
+        <button mat-raised-button color="primary" [disabled]="loading$ | async">
           Register
         </button>
-        <a mat-button color="primary" routerLink="../login">Cancel</a>
+        <a
+          mat-button
+          color="primary"
+          routerLink="../login"
+          [disabled]="loading$ | async"
+        >
+          Cancel
+        </a>
       </div>
     </form>
   </mat-card-content>

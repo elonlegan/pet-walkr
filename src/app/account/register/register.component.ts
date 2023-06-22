@@ -9,6 +9,10 @@ import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/services';
 import { MustMatch } from '@app/helpers';
+import { AppState } from '@app/store';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { register } from '@app/store/actions/account.actions';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +21,8 @@ import { MustMatch } from '@app/helpers';
 })
 export class RegisterComponent implements OnInit {
   form: UntypedFormGroup;
-  loading = false;
+  loading$: Observable<boolean | null>;
+
   submitted = false;
   roles = [];
 
@@ -26,10 +31,12 @@ export class RegisterComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private alertService: AlertService
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
+    this.loading$ = this.store.pipe(select((state) => state.account.loading));
+
     this.accountService
       .getRoles()
       .pipe(first())
@@ -63,6 +70,6 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.store.dispatch(register(this.form.value));
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
-import { AccountService } from '@app/services';
+import { AccountService, AlertService } from '@app/services';
 import * as AccountActions from '../actions/account.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -12,7 +12,8 @@ export class AccountEffects {
     private actions$: Actions,
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   login$ = createEffect(() =>
@@ -35,6 +36,54 @@ export class AccountEffects {
           const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           this.router.navigateByUrl(returnUrl);
           this.accountService.startRefreshTokenTimer();
+        })
+      ),
+    { dispatch: false }
+  );
+
+  loginFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AccountActions.loginFailure),
+        tap(({ error }) => {
+          this.alertService.error(error);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.register),
+      mergeMap((account) =>
+        this.accountService.register(account).pipe(
+          map(() => AccountActions.registerSuccess()),
+          catchError((error) => of(AccountActions.registerFailure({ error })))
+        )
+      )
+    )
+  );
+
+  registerSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AccountActions.registerSuccess),
+        tap(() => {
+          this.alertService.success(
+            'Registration successful, please check your email for verification instructions'
+          );
+          this.router.navigate(['/account/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  registerFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AccountActions.registerFailure),
+        tap(({ error }) => {
+          this.alertService.error(error);
         })
       ),
     { dispatch: false }
@@ -71,6 +120,7 @@ export class AccountEffects {
         ofType(AccountActions.logOut),
         tap(() => {
           this.accountService.logout();
+          this.router.navigate(['/account/login']);
         })
       ),
     { dispatch: false }

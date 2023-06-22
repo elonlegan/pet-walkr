@@ -13,14 +13,11 @@ const baseUrl = `${environment.apiUrl}/accounts`;
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private store: Store<AppState>
-  ) {}
+  constructor(private http: HttpClient, private store: Store<AppState>) {}
 
   public get accountValue(): Account {
     let accountValue: Account;
+
     this.store
       .select((state) => state.account)
       .subscribe((account) => {
@@ -31,18 +28,11 @@ export class AccountService {
   }
 
   login(email: string, password: string) {
-    return this.http
-      .post<any>(
-        `${baseUrl}/authenticate`,
-        { email, password },
-        { withCredentials: true }
-      )
-      .pipe(
-        map((account) => {
-          // this.accountSubject.next(account);
-          return account;
-        })
-      );
+    return this.http.post<any>(
+      `${baseUrl}/authenticate`,
+      { email, password },
+      { withCredentials: true }
+    );
   }
 
   logout() {
@@ -51,7 +41,6 @@ export class AccountService {
       .subscribe();
     this.stopRefreshTokenTimer();
     // this.accountSubject.next(null);
-    this.router.navigate(['/account/login']);
   }
 
   refreshToken() {

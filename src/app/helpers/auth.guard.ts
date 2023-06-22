@@ -14,7 +14,6 @@ export class AuthGuard {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const account = this.accountService.accountValue;
-    console.log(account);
 
     if (account) {
       // check if route is restricted by role
