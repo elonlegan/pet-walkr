@@ -108,6 +108,7 @@ export class AccountEffects {
       this.actions$.pipe(
         ofType(AccountActions.refreshTokenSuccess),
         tap(() => {
+          this.router.navigate(['/']);
           this.accountService.startRefreshTokenTimer();
         })
       ),
