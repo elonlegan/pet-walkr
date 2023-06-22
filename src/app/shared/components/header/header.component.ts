@@ -19,7 +19,7 @@ export class HeaderComponent {
     this.store.dispatch(logOut());
   }
 
-  getAccount() {
+  get account() {
     return this.accountService.accountValue;
   }
 }
