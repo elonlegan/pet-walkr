@@ -10,5 +10,14 @@
         <p><strong>Role:</strong> {{ account.role }}</p>
       </div>
     </div>
+
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="account.role === Role.PetWalker"
+      (click)="openConfirmDialog()"
+    >
+      Ask for verification
+    </button>
   </mat-card-content>
 </mat-card>
