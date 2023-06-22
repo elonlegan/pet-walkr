@@ -33,6 +33,21 @@ export const accountReducer = createReducer(
     user: null,
     error,
   })),
+  on(AccountActions.register, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(AccountActions.registerSuccess, (state) => ({
+    ...state,
+    loading: false,
+    error: null,
+  })),
+  on(AccountActions.registerFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
   on(AccountActions.refreshToken, (state) => ({
     ...state,
     loading: true,
@@ -48,6 +63,21 @@ export const accountReducer = createReducer(
     ...state,
     loading: false,
     user: null,
+    error,
+  })),
+  on(AccountActions.verifyEmail, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(AccountActions.verifyEmailSuccess, (state) => ({
+    ...state,
+    loading: false,
+    error: null,
+  })),
+  on(AccountActions.verifyEmailFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
     error,
   })),
   on(AccountActions.logOut, (state) => ({

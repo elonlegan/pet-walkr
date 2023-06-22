@@ -37,4 +37,16 @@ export const refreshTokenFailure = createAction(
   props<{ error: any }>()
 );
 
+export const verifyEmail = createAction(
+  '[Auth] Verify Email',
+  props<{ token: string }>()
+);
+
+export const verifyEmailSuccess = createAction('[Auth] Verify Email Success');
+
+export const verifyEmailFailure = createAction(
+  '[Auth] Verify Email Failure',
+  props<{ error: any }>()
+);
+
 export const logOut = createAction('[Auth] Logout');

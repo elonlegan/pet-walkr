@@ -114,6 +114,45 @@ export class AccountEffects {
     { dispatch: false }
   );
 
+  verifyEmail$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.verifyEmail),
+      mergeMap(({ token }) =>
+        this.accountService.verifyEmail(token).pipe(
+          map(() => AccountActions.verifyEmailSuccess()),
+          catchError((error) =>
+            of(AccountActions.verifyEmailFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  verifyEmailSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AccountActions.verifyEmailSuccess),
+        tap(() => {
+          this.alertService.success(
+            'Verification successful, you can now login'
+          );
+          this.router.navigate(['/account/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  verifyEmailFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AccountActions.verifyEmailFailure),
+        tap(({ error }) => {
+          this.alertService.error(error);
+        })
+      ),
+    { dispatch: false }
+  );
+
   logOut$ = createEffect(
     () =>
       this.actions$.pipe(
