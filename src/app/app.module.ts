@@ -15,6 +15,7 @@ import { ErrorInterceptor } from '@app/helpers';
 import { appInitializer } from '@app/helpers/app.initializer';
 import { AccountService } from '@app/services';
 import { environment } from '@environments/environment';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,7 @@ import { environment } from '@environments/environment';
       multi: true,
       deps: [AccountService],
     },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
