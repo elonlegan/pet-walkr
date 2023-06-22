@@ -1,5 +1,5 @@
 export enum Role {
-  Walker = 'Walker',
+  PetWalker = 'PetWalker',
   Admin = 'Admin',
-  Owner = 'Owner',
+  PetOwner = 'PetOwner',
 }

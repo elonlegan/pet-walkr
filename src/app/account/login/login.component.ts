@@ -5,8 +5,11 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { login } from '@store/actions/account.actions';
 import { AccountService, AlertService } from '@app/services';
+import { Observable } from 'rxjs';
+import { AppState } from '@app/store';
 
 @Component({
   selector: 'app-login',
@@ -15,15 +18,16 @@ import { AccountService, AlertService } from '@app/services';
 })
 export class LoginComponent implements OnInit {
   form: UntypedFormGroup;
-  loading = false;
   submitted = false;
+  loading$: Observable<boolean | null>;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -31,6 +35,8 @@ export class LoginComponent implements OnInit {
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
+
+    this.loading$ = this.store.pipe(select((state) => state.account.loading));
   }
 
   // convenience getter for easy access to form fields
@@ -46,6 +52,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.store.dispatch(login(this.form.value));
   }
 }

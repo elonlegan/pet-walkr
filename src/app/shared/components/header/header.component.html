@@ -1,3 +1,14 @@
 <mat-toolbar color="primary">
   <span class="logo" routerLink="/">PetWalkr</span>
+  <span class="example-spacer"></span>
+  <button
+    mat-raised-button
+    extended
+    color="warn"
+    *ngIf="getAccount()"
+    (click)="logout()"
+  >
+    <mat-icon>exit_to_app</mat-icon>
+    <span>Logout </span>
+  </button>
 </mat-toolbar>

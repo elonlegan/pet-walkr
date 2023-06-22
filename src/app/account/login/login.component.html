@@ -26,13 +26,13 @@
         <mat-error> Please provide a valid password </mat-error>
       </mat-form-field>
       <div class="actions">
-        <button mat-raised-button color="primary" [disabled]="loading">
+        <button mat-raised-button color="primary" [disabled]="loading$ | async">
           Login
         </button>
         <a
           mat-button
           color="primary"
-          [disabled]="loading"
+          [disabled]="loading$ | async"
           routerLink="../register"
         >
           Register
