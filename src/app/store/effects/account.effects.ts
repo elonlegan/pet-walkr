@@ -157,13 +157,24 @@ export class AccountEffects {
     { dispatch: false }
   );
 
-  logOut$ = createEffect(
+  logOut$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.logOut),
+      mergeMap(() =>
+        this.accountService
+          .logout()
+          .pipe(map(() => AccountActions.logOutSuccess()))
+      )
+    )
+  );
+
+  logOutSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AccountActions.logOut),
+        ofType(AccountActions.logOutSuccess),
         tap(() => {
-          this.accountService.logout();
           this.router.navigate(['/account/login']);
+          this.accountService.stopRefreshTokenTimer();
         })
       ),
     { dispatch: false }

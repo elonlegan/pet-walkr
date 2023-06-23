@@ -36,10 +36,12 @@ export class AccountService {
   }
 
   logout() {
-    this.http
-      .post<any>(`${baseUrl}/revoke-token`, {}, { withCredentials: true })
-      .subscribe();
-    this.stopRefreshTokenTimer();
+    return this.http.post<any>(
+      `${baseUrl}/revoke-token`,
+      {},
+      { withCredentials: true }
+    );
+
     // this.accountSubject.next(null);
   }
 
@@ -115,7 +117,7 @@ export class AccountService {
     );
   }
 
-  private stopRefreshTokenTimer() {
+  stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
   }
 }

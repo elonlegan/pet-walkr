@@ -50,6 +50,7 @@ export const verifyEmailFailure = createAction(
 );
 
 export const logOut = createAction('[Auth] Logout');
+export const logOutSuccess = createAction('[Auth] Logout success');
 
 export const askVerification = createAction(
   '[Auth] Ask Verification',

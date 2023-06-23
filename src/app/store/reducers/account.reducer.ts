@@ -82,6 +82,9 @@ export const accountReducer = createReducer(
   })),
   on(AccountActions.logOut, (state) => ({
     ...state,
+  })),
+  on(AccountActions.logOutSuccess, (state) => ({
+    ...state,
     user: null,
   })),
   on(AccountActions.askVerification, (state) => ({
