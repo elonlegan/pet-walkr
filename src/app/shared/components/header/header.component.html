@@ -2,7 +2,7 @@
   <span class="logo" routerLink="/">PetWalkr</span>
   <span class="example-spacer"></span>
   <ng-container *ngIf="account">
-    <a mat-button *ngIf="account.role === Role.PetOwner" routerLink="/admin">
+    <a mat-button *ngIf="account.role === Role.PetOwner" routerLink="/walkers">
       Walkers
     </a>
     <a mat-button routerLink="/profile"> Profile </a>
