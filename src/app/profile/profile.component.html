@@ -1,7 +1,12 @@
 <mat-card class="profile-card">
   <img mat-card-image [src]="account.imageUrl" />
   <mat-card-header>
-    <mat-card-title>{{ account.name }}</mat-card-title>
+    <mat-card-title
+      >{{ account.name }}
+      <mat-icon *ngIf="account.verifiedWalker" color="accent"
+        >verified_user</mat-icon
+      >
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <div class="profile-info">
@@ -14,10 +19,15 @@
     <button
       mat-raised-button
       color="primary"
-      *ngIf="account.role === Role.PetWalker"
+      *ngIf="account.role === Role.PetWalker && !account.verifiedWalker"
+      [disabled]="(loading$ | async) || account.verificationRequested"
       (click)="openConfirmDialog()"
     >
-      Ask for verification
+      <mat-icon *ngIf="loading$ | async">hourglass_empty</mat-icon>
+      <ng-container *ngIf="account.verificationRequested; else ask">
+        verification Requested
+      </ng-container>
+      <ng-template #ask> Ask for verification </ng-template>
     </button>
   </mat-card-content>
 </mat-card>

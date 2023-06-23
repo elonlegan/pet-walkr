@@ -8,4 +8,6 @@ export class Account {
   imageUrl: string;
   role: Role;
   jwtToken?: string;
+  verificationRequested?: boolean;
+  verifiedWalker?: boolean;
 }

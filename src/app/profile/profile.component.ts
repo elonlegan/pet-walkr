@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Role } from '@app/models';
-import { AccountService } from '@app/services';
+import { AccountService, AlertService } from '@app/services';
+import { WalkerService } from '@app/services/walker.service';
 import {
   ConfirmDialogData,
   ConfirmDialogComponent,
 } from '@app/shared/components/confirm-dialog/confirm-dialog.component';
+import { AppState } from '@app/store';
+import { askVerification, login } from '@app/store/actions/account.actions';
+import { Store, select } from '@ngrx/store';
+import { Observable, first } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -14,14 +19,26 @@ import {
 })
 export class ProfileComponent {
   Role = Role;
+  loading$: Observable<boolean | null>;
 
   constructor(
     private accountService: AccountService,
-    private dialog: MatDialog
+    private walkerService: WalkerService,
+    private alertService: AlertService,
+    private dialog: MatDialog,
+    private store: Store<AppState>
   ) {}
+
+  ngOnInit() {
+    this.loading$ = this.store.pipe(select((state) => state.account.loading));
+  }
 
   get account() {
     return this.accountService.accountValue;
+  }
+
+  askForVerification() {
+    this.store.dispatch(askVerification({ id: this.account.id }));
   }
 
   openConfirmDialog(): void {
@@ -40,10 +57,7 @@ export class ProfileComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Acción cuando se confirma
-        console.log('Confirmado');
-      } else {
-        // Acción cuando se cancela
-        console.log('Cancelado');
+        this.askForVerification();
       }
     });
   }

@@ -50,3 +50,17 @@ export const verifyEmailFailure = createAction(
 );
 
 export const logOut = createAction('[Auth] Logout');
+
+export const askVerification = createAction(
+  '[Auth] Ask Verification',
+  props<{ id: string }>()
+);
+export const askVerificationSuccess = createAction(
+  '[Auth] Ask Verification Success',
+  props<{ user: any }>()
+);
+
+export const askVerificationFailure = createAction(
+  '[Auth] Ask Verification Failure',
+  props<{ error: any }>()
+);

@@ -83,5 +83,21 @@ export const accountReducer = createReducer(
   on(AccountActions.logOut, (state) => ({
     ...state,
     user: null,
+  })),
+  on(AccountActions.askVerification, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(AccountActions.askVerificationSuccess, (state, { user }) => ({
+    ...state,
+    loading: false,
+    user,
+    error: null,
+  })),
+  on(AccountActions.askVerificationFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   }))
 );

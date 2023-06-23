@@ -17,11 +17,11 @@
     <td mat-cell *matCellDef="let account">{{ account.email }}</td>
   </ng-container>
   <ng-container matColumnDef="role">
-    <th mat-header-cell *matHeaderCellDef style="width: 30%">Role</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 20%">Role</th>
     <td mat-cell *matCellDef="let account">{{ account.role }}</td>
   </ng-container>
   <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef style="width: 10%"></th>
+    <th mat-header-cell *matHeaderCellDef style="width: 20%"></th>
     <td mat-cell *matCellDef="let account">
       <div class="actions">
         <button
@@ -43,6 +43,17 @@
           <mat-icon *ngIf="account.isDeleting">hourglass_empty</mat-icon>
           <mat-icon *ngIf="!account.isDeleting">delete</mat-icon>
           delete
+        </button>
+        <button
+          mat-raised-button
+          color="accent"
+          *ngIf="account.verificationRequested"
+          (click)="openConfirmVerifyDialog(account.id)"
+          [disabled]="account.isVerifying"
+        >
+          <mat-icon *ngIf="account.isVerifying">hourglass_empty</mat-icon>
+          <mat-icon *ngIf="!account.isVerifying">verified_user</mat-icon>
+          verify
         </button>
       </div>
     </td>

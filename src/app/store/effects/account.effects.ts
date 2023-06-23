@@ -5,12 +5,14 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { AccountService, AlertService } from '@app/services';
 import * as AccountActions from '../actions/account.actions';
 import { ActivatedRoute, Router } from '@angular/router';
+import { WalkerService } from '@app/services/walker.service';
 
 @Injectable()
 export class AccountEffects {
   constructor(
     private actions$: Actions,
     private accountService: AccountService,
+    private walkerService: WalkerService,
     private route: ActivatedRoute,
     private router: Router,
     private alertService: AlertService
@@ -163,6 +165,45 @@ export class AccountEffects {
         tap(() => {
           this.accountService.logout();
           this.router.navigate(['/account/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  askVerification$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AccountActions.askVerification),
+      mergeMap(({ id }) =>
+        this.walkerService.askForVerification(id).pipe(
+          map((user) => AccountActions.askVerificationSuccess({ user })),
+          catchError((error) =>
+            of(AccountActions.askVerificationFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  askVerificationSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AccountActions.askVerificationSuccess),
+        tap(() => {
+          this.router.navigate(
+            this.router.url.includes('account/') ? ['/'] : []
+          );
+          this.accountService.startRefreshTokenTimer();
+        })
+      ),
+    { dispatch: false }
+  );
+
+  askVerificationFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AccountActions.askVerificationFailure),
+        tap(({ error }) => {
+          this.alertService.error(error);
         })
       ),
     { dispatch: false }
