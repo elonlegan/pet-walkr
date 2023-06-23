@@ -110,9 +110,8 @@ export class AccountEffects {
       this.actions$.pipe(
         ofType(AccountActions.refreshTokenSuccess),
         tap(() => {
-          this.router.navigate(
-            this.router.url.includes('account/') ? ['/'] : []
-          );
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || [];
+          this.router.navigateByUrl(returnUrl);
           this.accountService.startRefreshTokenTimer();
         })
       ),
