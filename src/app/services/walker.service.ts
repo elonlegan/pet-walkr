@@ -15,7 +15,7 @@ const baseUrl = `${environment.apiUrl}/walkers`;
 export class WalkerService {
   constructor(private http: HttpClient, private store: Store<AppState>) {}
 
-  getAll(params: HttpParams) {
+  getAll(params?: HttpParams) {
     return this.http.get<Account[]>(baseUrl, { params });
   }
 

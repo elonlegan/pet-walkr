@@ -27,6 +27,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
   },
+  {
+    path: 'walkers',
+    canActivate: [AuthGuard],
+    data: { roles: [Role.PetOwner] },
+    loadChildren: () =>
+      import('./walkers/walkers.module').then((m) => m.WalkersModule),
+  },
 ];
 
 @NgModule({
